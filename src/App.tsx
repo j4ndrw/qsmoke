@@ -4,6 +4,7 @@ import { Button, Chip, Modal } from "@suid/material";
 import { SmokeCTA, Leaderboard } from "./modules";
 
 import { createSmokeQuitter } from "./hooks/createSmokeQuitter";
+import { store } from "./store";
 
 const App: Component = () => {
   const { state, handleStartSmoking, handleStopSmoking, formattedElapsedTime } =
@@ -32,8 +33,17 @@ const App: Component = () => {
         View Leaderboard
       </Button>
       <Modal open={openLeaderboard()} onClose={() => setOpenLeaderboard(false)}>
-        <div class="absolute top-1/2 left-1/2 translate-x-[-75%] translate-y-[-75%] width-[400px] border-white border-solid rounded bg-slate-900">
-          <Leaderboard formattedElapsedTime={formattedElapsedTime()} />
+        <div class="absolute top-1/4 left-1/2 translate-x-[-50%] translate-y-[-50%] width-[400px] border-white border-solid rounded bg-slate-900">
+          <div class="flex flex-col justify-center items-center gap-2">
+            <Leaderboard formattedElapsedTime={formattedElapsedTime()} />
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => store().deleteLeaderboard()}
+            >
+              Delete Leaderboard
+            </Button>
+          </div>
         </div>
       </Modal>
     </div>
