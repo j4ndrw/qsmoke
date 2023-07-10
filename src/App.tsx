@@ -1,10 +1,9 @@
 import { createSignal, type Component } from "solid-js";
 import { Button, Chip, Modal } from "@suid/material";
 
-import { SmokeCTA, Leaderboard } from "./modules";
+import { SmokeCTA, Leaderboard, Title, AbstinenceTimer } from "./components";
 
 import { createSmokeQuitter } from "./hooks/createSmokeQuitter";
-import { store } from "./store";
 
 const App: Component = () => {
   const { state, handleStartSmoking, handleStopSmoking, formattedElapsedTime } =
@@ -12,37 +11,25 @@ const App: Component = () => {
 
   const [openLeaderboard, setOpenLeaderboard] = createSignal(false);
 
+  const handleOpenLeaderboard = () => setOpenLeaderboard(true);
+  const handleCloseLeaderboard = () => setOpenLeaderboard(false);
+
   return (
-    <div class="bg-gray-900 scale-[1.75] w-screen h-screen overflow-hidden overflow-y-scroll flex flex-col justify-center items-center gap-2">
-      <Chip
-        label={`Abstained for ${formattedElapsedTime()}`}
-        variant="outlined"
-        color="default"
-        class={
-          !formattedElapsedTime()
-            ? "scale-50 opacity-0"
-            : "bg-gray-700 scale-50 [&>span]:text-white"
-        }
-      />
+    <div class="bg-gray-900 w-screen h-screen overflow-hidden overflow-y-scroll flex flex-col justify-center items-center gap-2">
+      <Title />
+      <AbstinenceTimer formattedElapsedTime={formattedElapsedTime()} />
       <SmokeCTA
         state={state()}
         onStopSmoking={handleStopSmoking}
         onStartSmoking={handleStartSmoking}
       />
-      <Button variant="outlined" onClick={() => setOpenLeaderboard(true)}>
+      <Button variant="outlined" onClick={handleOpenLeaderboard}>
         View Leaderboard
       </Button>
-      <Modal open={openLeaderboard()} onClose={() => setOpenLeaderboard(false)}>
-        <div class="absolute top-1/4 left-1/2 translate-x-[-50%] translate-y-[-50%] width-[400px] border-white border-solid rounded bg-slate-900">
+      <Modal open={openLeaderboard()} onClose={handleCloseLeaderboard}>
+        <div class="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] width-[400px] border-white border-solid rounded bg-slate-900">
           <div class="flex flex-col justify-center items-center gap-2">
             <Leaderboard formattedElapsedTime={formattedElapsedTime()} />
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => store().deleteLeaderboard()}
-            >
-              Delete Leaderboard
-            </Button>
           </div>
         </div>
       </Modal>
