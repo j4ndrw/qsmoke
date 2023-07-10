@@ -2,6 +2,7 @@
 
 ## Features
 
-- [ ] Automatic time tracker
+- [x] Automatic time tracker
+- [x] Leaderboard (your best streaks)
 - [ ] Persistent notifications (users shouldn't have to open the app to see their progress)
-- [ ] Leaderboard (your best streaks)
+  - I'm too lazy to implement this. Maybe some other time
