@@ -1,53 +1,33 @@
-import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
+import { createEffect, createMemo, onCleanup } from "solid-js";
 import { store } from "../store";
 import { formatElapsedTime } from "../utils";
-import { startSmoking, stopSmoking } from "../store/reducer";
+import { createSmokeMachine } from "../state-machine/smoke";
 
 export const createSmokeQuitter = () => {
-  const state = createMemo<"started" | "stopped">(() =>
-    store().stoppedSmokingAt ? "stopped" : "started"
-  );
-
-  const [
-    elapsedSmokeQuittingTimeIntervalId,
-    setElapsedSmokeQuittingTimeIntervalId,
-  ] = createSignal<NodeJS.Timeout | null>(null);
+  const [state, send] = createSmokeMachine();
+  const smokeState = createMemo(() => state().smokeState);
 
   const formattedElapsedTime = createMemo(() => {
     const { elapsedMs } = store();
+    if (smokeState() === "started") return null;
+
     return elapsedMs ? formatElapsedTime(elapsedMs) : null;
   });
 
-  const cleanupInterval = () => {
-    const id = elapsedSmokeQuittingTimeIntervalId();
-    if (id) clearInterval(id);
-  };
-
-  onMount(async () => {
-    if (store().stoppedSmokingAt) {
-      const id = stopSmoking();
-      setElapsedSmokeQuittingTimeIntervalId(id);
-    }
+  createEffect(async () => {
+    if (store().stoppedSmokingAt) send({ type: "STOP_SMOKING" });
   });
 
   onCleanup(() => {
-    cleanupInterval();
+    const { elapsedSmokeQuittingTimeIntervalId: id } = state();
+    if (id) clearInterval(id);
   });
 
-  const handleStopSmoking = () => {
-    cleanupInterval();
-
-    const id = stopSmoking();
-    setElapsedSmokeQuittingTimeIntervalId(id);
-  };
-
-  const handleStartSmoking = () => {
-    cleanupInterval();
-    startSmoking();
-  };
+  const handleStopSmoking = () => send({ type: "STOP_SMOKING" });
+  const handleStartSmoking = () => send({ type: "START_SMOKING" });
 
   return {
-    state,
+    state: smokeState,
     handleStartSmoking,
     handleStopSmoking,
     formattedElapsedTime,

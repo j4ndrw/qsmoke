@@ -30,8 +30,16 @@ const vanillaStore = create(
       setElapsedMs: (ms) => set({ elapsedMs: ms }),
 
       leaderboard: [],
-      addToLeaderboard: (leaderboardItem) =>
-        set({ leaderboard: [leaderboardItem, ...get().leaderboard] }),
+      addToLeaderboard: (leaderboardItem) => {
+        const { leaderboard } = get();
+        const isAlreadySaved = leaderboard.some(
+          (item) =>
+            item.stoppedSmokingAt === leaderboardItem.stoppedSmokingAt &&
+            item.startedSmokingAt === leaderboardItem.startedSmokingAt
+        );
+        if (isAlreadySaved) return;
+        set({ leaderboard: [leaderboardItem, ...get().leaderboard] });
+      },
       deleteLeaderboard: () => set({ leaderboard: [] }),
     }),
     {

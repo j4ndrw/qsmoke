@@ -2,13 +2,9 @@ import { Preferences } from "@capacitor/preferences";
 import { StateStorage } from "zustand/middleware";
 
 export const internalStorage: StateStorage = {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   async getItem(key: string) {
     const result = await Preferences.get({ key });
-    if (result.value === null) return null;
-    if (Number.isNaN(+result.value)) return result.value;
-    return +result.value;
+    return result.value ?? null;
   },
   async setItem(key: string, value: string) {
     await Preferences.set({
@@ -29,10 +25,10 @@ export const formatElapsedTime = (elapsedMs: number) => {
 
   const days = Math.floor(
     elapsedMs /
-    (HOURS_IN_DAY *
-      SECONDS_IN_HOUR *
-      MILLISECONDS_IN_SECOND *
-      ONE_SECOND_IN_MILLISECONDS)
+      (HOURS_IN_DAY *
+        SECONDS_IN_HOUR *
+        MILLISECONDS_IN_SECOND *
+        ONE_SECOND_IN_MILLISECONDS)
   );
   const daysMs =
     elapsedMs %
@@ -43,7 +39,7 @@ export const formatElapsedTime = (elapsedMs: number) => {
 
   const hours = Math.floor(
     daysMs /
-    (SECONDS_IN_HOUR * MILLISECONDS_IN_SECOND * ONE_SECOND_IN_MILLISECONDS)
+      (SECONDS_IN_HOUR * MILLISECONDS_IN_SECOND * ONE_SECOND_IN_MILLISECONDS)
   );
   const hoursMs =
     elapsedMs %

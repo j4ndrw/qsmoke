@@ -1,5 +1,5 @@
 import { createSignal, type Component } from "solid-js";
-import { Button, Chip, Modal } from "@suid/material";
+import { Button, Modal } from "@suid/material";
 
 import { SmokeCTA, Leaderboard, Title, AbstinenceTimer } from "./components";
 

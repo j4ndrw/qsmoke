@@ -25,9 +25,6 @@ dependencies:
   solid-js:
     specifier: ^1.7.7
     version: 1.7.7
-  solid-zustand:
-    specifier: ^1.7.0
-    version: 1.7.0(solid-js@1.7.7)(zustand@4.3.9)
   zustand:
     specifier: ^4.3.9
     version: 4.3.9(react@18.2.0)
@@ -2776,16 +2773,6 @@ packages:
       '@babel/types': 7.22.5
       solid-js: 1.7.7
     dev: true
-
-  /solid-zustand@1.7.0(solid-js@1.7.7)(zustand@4.3.9):
-    resolution: {integrity: sha512-BWLSYIUOr7qhAdY+IFh1fA3+s6LvqQuxmHgzuZ8BQHHBcoq/a1S+lgDbWQmFF8fhmJyXHbSbp/WlPJgvdjmSiw==}
-    peerDependencies:
-      solid-js: ^1.6.0
-      zustand: ^4.3.0
-    dependencies:
-      solid-js: 1.7.7
-      zustand: 4.3.9(react@18.2.0)
-    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

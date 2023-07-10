@@ -5,9 +5,11 @@ export const stopSmoking = (
   updateElapsedTimeDelay = UPDATE_SMOKE_QUITTING_ELAPSED_TIME_DELAY_SECONDS
 ): NodeJS.Timeout | null => {
   const { stoppedSmokingAt, setStoppedSmokingAt, setElapsedMs } = store();
+
   const newStoppedSmokingAt = stoppedSmokingAt
     ? new Date(stoppedSmokingAt)
     : new Date();
+
   setStoppedSmokingAt(newStoppedSmokingAt);
 
   return setInterval(() => {
