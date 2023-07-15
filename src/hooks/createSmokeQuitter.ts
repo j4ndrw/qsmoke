@@ -1,10 +1,14 @@
 import { createEffect, createMemo, onCleanup } from "solid-js";
 import { store } from "../store";
 import { formatElapsedTime } from "../utils";
-import { createSmokeMachine } from "../state-machine/smoke";
+import { machine as smokeMachine } from "../state-machine/smoke";
+import { createStateMachine } from "../state-machine";
 
 export const createSmokeQuitter = () => {
-  const [state, dispatch] = createSmokeMachine();
+  const [state, dispatch] = createStateMachine(smokeMachine, {
+    smokeState: "started",
+    elapsedSmokeQuittingTimeIntervalId: null,
+  });
   const smokeState = createMemo(() => state().smokeState);
 
   const formattedElapsedTime = createMemo(() => {
