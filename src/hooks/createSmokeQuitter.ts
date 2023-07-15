@@ -9,11 +9,10 @@ export default () => {
     smokeState: "started",
     elapsedSmokeQuittingTimeIntervalId: null,
   });
-  const smokeState = createMemo(() => state().smokeState);
 
   const formattedElapsedTime = createMemo(() => {
     const { elapsedMs } = store();
-    if (smokeState() === "started") return null;
+    if (state().smokeState === "started") return null;
 
     return elapsedMs ? formatElapsedTime(elapsedMs) : null;
   });
@@ -31,7 +30,7 @@ export default () => {
   const handleStartSmoking = () => dispatch({ type: "START_SMOKING" });
 
   return {
-    state: smokeState,
+    state: () => state().smokeState,
     handleStartSmoking,
     handleStopSmoking,
     formattedElapsedTime,

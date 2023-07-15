@@ -1,9 +1,7 @@
 import { Chip } from "@suid/material";
 import { Component } from "solid-js";
 
-type Props = {
-  formattedElapsedTime: string | null;
-};
+type Props = { formattedElapsedTime: string | null };
 
 const AbstinenceTimer: Component<Props> = (props) => (
   <Chip

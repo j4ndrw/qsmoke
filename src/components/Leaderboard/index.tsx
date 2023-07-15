@@ -4,9 +4,7 @@ import { format } from "date-fns";
 import { formatElapsedTime } from "../../utils";
 import { Component, For } from "solid-js";
 
-type Props = {
-  formattedElapsedTime: string | null;
-};
+type Props = { formattedElapsedTime: string | null };
 
 const Leaderboard: Component<Props> = (props) => {
   const handleDeleteLeaderboard = () => store().deleteLeaderboard();

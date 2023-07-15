@@ -5,7 +5,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import { internalStorage } from "../utils";
 
-import { LeaderboardItem } from "../types";
+import { LeaderboardItem } from "./types";
 
 type Store = {
   stoppedSmokingAt: number | null;

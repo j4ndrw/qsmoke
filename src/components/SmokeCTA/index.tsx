@@ -1,16 +1,16 @@
 import { Button } from "@suid/material";
-import { Component, Show } from "solid-js";
+import { Component, Switch, Match } from "solid-js";
 
 type Props = {
-  state: "started" | "stopped" | "ready";
+  state: "started" | "stopped";
   onStartSmoking: () => void;
   onStopSmoking: () => void;
 };
 
 const SmokeCTA: Component<Props> = (props: Props) => {
   return (
-    <>
-      <Show when={props.state === "started"}>
+    <Switch>
+      <Match when={props.state === "started"}>
         <Button
           variant="contained"
           color="success"
@@ -18,8 +18,8 @@ const SmokeCTA: Component<Props> = (props: Props) => {
         >
           I Stopped Smoking Today
         </Button>
-      </Show>
-      <Show when={props.state === "stopped"}>
+      </Match>
+      <Match when={props.state === "stopped"}>
         <Button
           variant="contained"
           color="error"
@@ -27,8 +27,8 @@ const SmokeCTA: Component<Props> = (props: Props) => {
         >
           I Started Smoking Today
         </Button>
-      </Show>
-    </>
+      </Match>
+    </Switch>
   );
 };
 
