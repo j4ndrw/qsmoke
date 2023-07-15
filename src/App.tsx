@@ -3,7 +3,7 @@ import { Button, Modal } from "@suid/material";
 
 import { SmokeCTA, Leaderboard, Title, AbstinenceTimer } from "./components";
 
-import { createSmokeQuitter } from "./hooks/createSmokeQuitter";
+import { createSmokeQuitter } from "./hooks";
 
 const App: Component = () => {
   const { state, handleStartSmoking, handleStopSmoking, formattedElapsedTime } =

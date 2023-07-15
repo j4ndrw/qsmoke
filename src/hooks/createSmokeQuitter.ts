@@ -4,7 +4,7 @@ import { formatElapsedTime } from "../utils";
 import { machine as smokeMachine } from "../state-machine/smoke";
 import { createStateMachine } from "../state-machine";
 
-export const createSmokeQuitter = () => {
+export default () => {
   const [state, dispatch] = createStateMachine(smokeMachine, {
     smokeState: "started",
     elapsedSmokeQuittingTimeIntervalId: null,
