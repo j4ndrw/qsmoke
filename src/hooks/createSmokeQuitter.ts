@@ -4,7 +4,7 @@ import { formatElapsedTime } from "../utils";
 import { createSmokeMachine } from "../state-machine/smoke";
 
 export const createSmokeQuitter = () => {
-  const [state, send] = createSmokeMachine();
+  const [state, dispatch] = createSmokeMachine();
   const smokeState = createMemo(() => state().smokeState);
 
   const formattedElapsedTime = createMemo(() => {
@@ -15,7 +15,7 @@ export const createSmokeQuitter = () => {
   });
 
   createEffect(async () => {
-    if (store().stoppedSmokingAt) send({ type: "STOP_SMOKING" });
+    if (store().stoppedSmokingAt) dispatch({ type: "STOP_SMOKING" });
   });
 
   onCleanup(() => {
@@ -23,8 +23,8 @@ export const createSmokeQuitter = () => {
     if (id) clearInterval(id);
   });
 
-  const handleStopSmoking = () => send({ type: "STOP_SMOKING" });
-  const handleStartSmoking = () => send({ type: "START_SMOKING" });
+  const handleStopSmoking = () => dispatch({ type: "STOP_SMOKING" });
+  const handleStartSmoking = () => dispatch({ type: "START_SMOKING" });
 
   return {
     state: smokeState,

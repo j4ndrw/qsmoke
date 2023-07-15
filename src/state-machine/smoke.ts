@@ -1,52 +1,52 @@
-/* eslint-disable indent */
-import { createSignal } from "solid-js";
+import { Accessor, createSignal } from "solid-js";
 import { startSmoking, stopSmoking } from "../store/reducer";
+import { Dispatch, Event, Machine } from "./types";
 
-type Event = { type: "START_SMOKING" } | { type: "STOP_SMOKING" };
-
-type SmokeState = "started" | "stopped";
-
-const [state, setState] = createSignal<{
-  smokeState: SmokeState;
+type SmokeEvent = Event<"START_SMOKING"> | Event<"STOP_SMOKING">;
+type State = {
+  smokeState: "started" | "stopped";
   elapsedSmokeQuittingTimeIntervalId: NodeJS.Timeout | null;
-}>({
-  smokeState: "started",
-  elapsedSmokeQuittingTimeIntervalId: null,
-});
+};
 
-const machine = (event: Event): ReturnType<typeof state> => {
+const machine: Machine<SmokeEvent, State> = (event) => (state) => {
   const cleanupInterval = () => {
-    const { elapsedSmokeQuittingTimeIntervalId: id } = state();
+    const { elapsedSmokeQuittingTimeIntervalId: id } = state;
     if (id) clearInterval(id);
   };
   switch (event.type) {
-    case "STOP_SMOKING": {
-      if (state().smokeState === "stopped") return state();
+  case "STOP_SMOKING": {
+    if (state.smokeState === "stopped") return state;
 
-      cleanupInterval();
+    cleanupInterval();
 
-      const id = stopSmoking();
-      return {
-        smokeState: "stopped",
-        elapsedSmokeQuittingTimeIntervalId: id,
-      };
-    }
-    case "START_SMOKING": {
-      if (state().smokeState === "started") return state();
+    const id = stopSmoking();
+    return {
+      smokeState: "stopped",
+      elapsedSmokeQuittingTimeIntervalId: id,
+    };
+  }
+  case "START_SMOKING": {
+    if (state.smokeState === "started") return state;
 
-      cleanupInterval();
+    cleanupInterval();
 
-      startSmoking();
-      return {
-        smokeState: "started",
-        elapsedSmokeQuittingTimeIntervalId: null,
-      };
-    }
+    startSmoking();
+    return {
+      smokeState: "started",
+      elapsedSmokeQuittingTimeIntervalId: null,
+    };
+  }
   }
 };
 
-const send = (event: Event): void => {
-  setState(machine(event));
-};
+export const createSmokeMachine = (): readonly [
+  Accessor<State>,
+  Dispatch<SmokeEvent>
+] => {
+  const [state, setState] = createSignal<State>({
+    smokeState: "started",
+    elapsedSmokeQuittingTimeIntervalId: null,
+  });
 
-export const createSmokeMachine = () => [state, send] as const;
+  return [state, (event) => setState(machine(event))];
+};
