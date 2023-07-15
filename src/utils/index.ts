@@ -19,34 +19,32 @@ export const internalStorage: StateStorage = {
 
 export const formatElapsedTime = (elapsedMs: number) => {
   const HOURS_IN_DAY = 24;
-  const SECONDS_IN_HOUR = 60;
-  const MILLISECONDS_IN_SECOND = 60;
-  const ONE_SECOND_IN_MILLISECONDS = 1000;
+  const MINUTES_IN_HOUR = 60;
+  const SECONDS_IN_MINUTES = 60;
+  const MILLISECONDS_IN_SECOND = 1000;
 
   const days = Math.floor(
     elapsedMs /
       (HOURS_IN_DAY *
-        SECONDS_IN_HOUR *
-        MILLISECONDS_IN_SECOND *
-        ONE_SECOND_IN_MILLISECONDS)
+        MINUTES_IN_HOUR *
+        SECONDS_IN_MINUTES *
+        MILLISECONDS_IN_SECOND)
   );
   const daysMs =
     elapsedMs %
     (HOURS_IN_DAY *
-      SECONDS_IN_HOUR *
-      MILLISECONDS_IN_SECOND *
-      ONE_SECOND_IN_MILLISECONDS);
+      MINUTES_IN_HOUR *
+      SECONDS_IN_MINUTES *
+      MILLISECONDS_IN_SECOND);
 
   const hours = Math.floor(
-    daysMs /
-      (SECONDS_IN_HOUR * MILLISECONDS_IN_SECOND * ONE_SECOND_IN_MILLISECONDS)
+    daysMs / (MINUTES_IN_HOUR * SECONDS_IN_MINUTES * MILLISECONDS_IN_SECOND)
   );
   const hoursMs =
-    elapsedMs %
-    (SECONDS_IN_HOUR * MILLISECONDS_IN_SECOND * ONE_SECOND_IN_MILLISECONDS);
+    elapsedMs % (MINUTES_IN_HOUR * SECONDS_IN_MINUTES * MILLISECONDS_IN_SECOND);
 
   const minutes = Math.floor(
-    hoursMs / (MILLISECONDS_IN_SECOND * ONE_SECOND_IN_MILLISECONDS)
+    hoursMs / (SECONDS_IN_MINUTES * MILLISECONDS_IN_SECOND)
   );
 
   return `${days} day(s), ${hours} hour(s), ${minutes} minute(s)`;
