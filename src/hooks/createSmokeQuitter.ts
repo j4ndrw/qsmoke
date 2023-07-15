@@ -18,7 +18,7 @@ export const createSmokeQuitter = () => {
     return elapsedMs ? formatElapsedTime(elapsedMs) : null;
   });
 
-  createEffect(async () => {
+  createEffect(() => {
     if (store().stoppedSmokingAt) dispatch({ type: "STOP_SMOKING" });
   });
 
